@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login do Posto - Roleta Premium</title>
+  <link rel="stylesheet" href="css/admin-style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="login-background">
+  <div class="login-container">
+      <div class="login-header">
+          <div class="login-logo">⛽</div>
+          <h1 class="login-title">Login do Posto</h1>
+          <p class="login-subtitle">Acesse o painel do seu posto</p>
+      </div>
+
+      <form id="posto-login-form">
+          <div class="error-message" id="error-message"></div>
+          
+          <div class="form-group">
+              <label for="posto-id" class="form-label">ID do Posto ou CNPJ</label>
+              <input type="text" id="posto-id" class="form-input" placeholder="Digite o ID ou CNPJ" required>
+          </div>
+
+          <div class="form-group">
+              <label for="posto-password" class="form-label">Senha</label>
+              <input type="password" id="posto-password" class="form-input" placeholder="••••••••" required autocomplete="current-password">
+          </div>
+
+          <button type="submit" class="btn btn-primary login-btn" id="login-btn">Entrar no Posto</button>
+      </form>
+
+      <div class="back-link">
+          <a href="login.html">← Voltar</a>
+      </div>
+  </div>
+
+  <script src="js/shared-utils.js"></script>
+  <script src="js/config-manager.js"></script>
+  <script src="js/posto-manager.js"></script>
+  <script>
+      document.addEventListener('DOMContentLoaded', function() {
+          const form = document.getElementById('posto-login-form');
+          const postoIdInput = document.getElementById('posto-id');
+          const passwordInput = document.getElementById('posto-password');
+          const loginBtn = document.getElementById('login-btn');
+          const errorMessage = document.getElementById('error-message');
+
+          if (window.postoManager && window.postoManager.isLogado()) {
+              window.location.href = 'admin.html';
+              return;
+          }
+
+          form.addEventListener('submit', async function(e) {
+              e.preventDefault();
+              const postoId = postoIdInput.value.trim();
+              const password = passwordInput.value.trim();
+              if (!postoId || !password) {
+                  showError('Preencha todos os campos');
+                  return;
+              }
+              loginBtn.disabled = true;
+              loginBtn.textContent = 'Verificando...';
+              hideError();
+              
+              setTimeout(async () => {
+                  try {
+                      const loginSuccess = await window.postoManager.login(postoId, password);
+                      if (loginSuccess) {
+                          window.location.href = 'admin.html';
+                      } else {
+                          showError('ID do posto ou senha incorretos');
+                          loginBtn.disabled = false;
+                          loginBtn.textContent = 'Entrar no Posto';
+                          postoIdInput.focus();
+                      }
+                  } catch (error) {
+                      showError('Erro ao fazer login: ' + error.message);
+                      loginBtn.disabled = false;
+                      loginBtn.textContent = 'Entrar no Posto';
+                  }
+              }, 1000);
+          });
+
+          function showError(message) {
+              errorMessage.textContent = message;
+              errorMessage.style.display = 'block';
+          }
+          function hideError() {
+              errorMessage.style.display = 'none';
+          }
+          postoIdInput.focus();
+      });
+  </script>
+</body>
+</html>

@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard - Admin Roleta Premium</title>
+<link rel="stylesheet" href="css/admin-style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="admin-container">
+    <div class="mobile-overlay" id="mobile-overlay"></div>
+    <!-- Sidebar -->
+    <aside class="admin-sidebar" id="admin-sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <div class="logo-icon">⚙️</div>
+                <div class="logo-text">
+                    <h1 id="titulo-admin">Painel Admin</h1>
+                    <p class="posto-nome">Carregando...</p>
+                </div>
+            </div>
+            <button class="sidebar-toggle" id="sidebar-toggle">
+                <span>←</span>
+            </button>
+        </div>
+
+        <nav class="sidebar-nav">
+            <button class="nav-btn active" data-tab="dashboard">
+                <span class="nav-icon">📊</span>
+                <span class="nav-text">Dashboard</span>
+            </button>
+            <button class="nav-btn" data-tab="premios">
+                <span class="nav-icon">🏆</span>
+                <span class="nav-text">Prêmios</span>
+            </button>
+            <button class="nav-btn" data-tab="premios-rapido">
+                <span class="nav-icon">⚡</span>
+                <span class="nav-text">Prêmios Rápido</span>
+            </button>
+            <button class="nav-btn" data-tab="estoque">
+                <span class="nav-icon">📦</span>
+                <span class="nav-text">Estoque</span>
+            </button>
+            <button class="nav-btn" data-tab="resultados">
+                <span class="nav-icon">🎯</span>
+                <span class="nav-text">Resultados</span>
+            </button>
+            <button class="nav-btn" data-tab="personalizacao">
+                <span class="nav-icon">🎨</span>
+                <span class="nav-text">Personalização</span>
+            </button>
+            <button class="nav-btn" data-tab="configuracoes">
+                <span class="nav-icon">⚙️</span>
+                <span class="nav-text">Configurações</span>
+            </button>
+            <button class="nav-btn" data-tab="historico">
+                <span class="nav-icon">📋</span>
+                <span class="nav-text">Histórico</span>
+            </button>
+            <button class="nav-btn" data-tab="clientes">
+                <span class="nav-icon">👥</span>
+                <span class="nav-text">Clientes</span>
+            </button>
+        </nav>
+
+        <div class="sidebar-footer">
+            <a href="index.html" class="btn btn-secondary btn-block">
+                <span>🎯</span>
+                <span>Roleta</span>
+            </a>
+            <button id="btn-logout" class="btn btn-danger btn-block">
+                <span>🚪</span>
+                <span>Sair</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="admin-main" id="admin-main">
+        <!-- Mobile Header -->
+        <header class="mobile-header">
+            <button class="mobile-menu-btn" id="mobile-menu-btn">
+                <span>☰</span>
+            </button>
+            <h1 class="mobile-title">Painel Admin</h1>
+        </header>
+
+        <div class="tab-content-wrapper">
+                        <!-- Dashboard Tab -->
+            <div id="dashboard-tab" class="tab-panel active">
+                <div class="page-header">
+                    <h2>Dashboard</h2>
+                    <div class="page-actions">
+                        <button id="btn-reset-sistema" class="btn btn-warning">
+                            <span>🔄</span>
+                            <span>Resetar Sistema</span>
+                        </button>
+                        <button id="btn-backup" class="btn btn-info">
+                            <span>💾</span>
+                            <span>Fazer Backup</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="dashboard-grid">
+                    <div class="card stat-card">
+                        <div class="stat-icon">🎲</div>
+                        <div class="stat-content">
+                            <h3>IDs Restantes</h3>
+                            <div class="stat-number" id="dash-ids-restantes">0</div>
+                        </div>
+                    </div>
+                    <div class="card stat-card">
+                        <div class="stat-icon">🏆</div>
+                        <div class="stat-content">
+                            <h3>Prêmios Ganhos</h3>
+                            <div class="stat-number" id="dash-premios-ganhos">0</div>
+                        </div>
+                    </div>
+                    <div class="card stat-card">
+                        <div class="stat-icon">⭐</div>
+                        <div class="stat-content">
+                            <h3>Prêmios Disponíveis</h3>
+                            <div class="stat-number" id="dash-premios-disponiveis">0</div>
+                        </div>
+                    </div>
+                    <div class="card stat-card">
+                        <div class="stat-icon">👥</div>
+                        <div class="stat-content">
+                            <h3>Total Clientes</h3>
+                            <div class="stat-number" id="dash-total-clientes">0</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- NOVO CARD: IDs Premiados Atualmente -->
+                <div class="card" style="margin-top: 1.5rem;">
+                    <h3>IDs Premiados Atualmente</h3>
+                    <div id="dashboard-ids-premiados" style="
+                        display: flex; 
+                        flex-wrap: wrap; 
+                        gap: 8px; 
+                        padding: 10px; 
+                        border: 1px solid var(--color-border); 
+                        border-radius: var(--border-radius-md); /* CORRIGIDO AQUI */
+                        background-color: var(--bg-dark);
+                        min-height: 50px;
+                        align-items: center;
+                    ">
+                        <!-- Os IDs serão carregados aqui pelo JavaScript -->
+                        <span style="color: var(--color-text-secondary);">Carregando IDs...</span>
+                    </div>
+                </div>
+                <!-- FIM DO NOVO CARD -->
+
+                <div class="card dashboard-recent">
+                    <h3>Atividade Recente</h3>
+                    <div id="atividade-recente" class="recent-list">
+                        <!-- Será preenchido dinamicamente -->
+                    </div>
+                </div>
+            </div>
+            <!-- Prêmios Tab -->
+            <div id="premios-tab" class="tab-panel">
+                <div class="page-header">
+                    <h2>Gerenciar Prêmios</h2>
+                    <button id="btn-add-premio" class="btn btn-primary">
+                        <span>➕</span>
+                        <span>Adicionar Prêmio</span>
+                    </button>
+                </div>
+                <div id="premios-list" class="premios-grid">
+                    <!-- Prêmios serão carregados aqui -->
+                </div>
+            </div>
+
+            <!-- Prêmios Rápido Tab -->
+            <div id="premios-rapido-tab" class="tab-panel">
+                <div class="page-header">
+                    <h2>Adicionar Prêmios Rápido</h2>
+                </div>
+
+                <div class="premios-rapido-container">
+                    <div class="input-section card">
+                        <div class="form-group">
+                            <label>Lista de Prêmios</label>
+                            <textarea
+                                id="premios-rapido-input"
+                                class="form-textarea"
+                                placeholder="Exemplo:&#10;2 iPhone 15 Pro&#10;3 Cabo USB-C&#10;1 Carregador Sem Fio&#10;5 Fone Bluetooth"
+                                rows="8"
+                            ></textarea>
+                            <div class="input-hint">
+                                <span>Formato: QUANTIDADE NOME_DO_PRÊMIO (um por linha)</span>
+                            </div>
+                        </div>
+                        <!-- NOVO: Checkbox para intercalar TENTE NOVAMENTE -->
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="rapido-alternar-tente-novamente"> Intercalar com "TENTE NOVAMENTE"
+                            </label>
+                            <div class="input-hint">
+                                <span>Se ativado, cada prêmio será seguido por um segmento "TENTE NOVAMENTE" na roleta.</span>
+                            </div>
+                        </div>
+                        <!-- FIM NOVO -->
+                        <div class="premios-rapido-actions">
+                            <button id="btn-processar-premios" class="btn btn-primary">
+                                <span>⚡</span>
+                                <span>Processar e Salvar</span>
+                            </button>
+                            <button id="btn-limpar-input" class="btn btn-secondary">
+                                <span>🗑️</span>
+                                <span>Limpar</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="preview-section card">
+                        <h3>Preview dos Prêmios</h3>
+                        <div id="premios-preview" class="premios-preview">
+                            <div class="preview-empty">
+                                <span>Digite os prêmios para ver o preview</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Estoque Tab -->
+            <div id="estoque-tab" class="tab-panel">
+                <div class="page-header">
+                    <h2>Controle de Estoque</h2>
+                    <div class="page-actions">
+                        <button id="btn-atualizar-estoque" class="btn btn-info">
+                            <span>🔄</span>
+                            <span>Atualizar</span>
+                        </button>
+                        <button id="btn-relatorio-estoque" class="btn btn-secondary">
+                            <span>📊</span>
+                            <span>Relatório</span>
+                        </button>
+                    </div>
+                </div>
+                <div id="estoque-list" class="estoque-grid">
+                    <!-- Estoque será carregado aqui pelo admin-script.js -->
+                </div>
+            </div>
+
+            <!-- Últimos Resultados Tab -->
+            <div id="resultados-tab" class="tab-panel">
+                <div class="page-header">
+                    <h2>Últimos Resultados</h2>
+                    <div class="resultados-filter">
+                        <select id="filter-resultados" class="form-input">
+                            <option value="todos">Todos</option>
+                            <option value="ganhou">Apenas Ganhadores</option>
+                            <option value="perdeu">Apenas Perdedores</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="ultimos-resultados" class="resultados-container">
+                    <!-- Resultados serão carregados aqui -->
+                </div>
+            </div>
+
+            <!-- Personalização Tab -->
+            <div id="personalizacao-tab" class="tab-panel">
+                <div class="page-header">
+                    <h2>Personalização Visual</h2>
+                </div>
+
+                <div class="personalizacao-grid">
+                    <div class="card">
+                        <h3>Cores do Sistema</h3>
+                        <div class="color-grid">
+                            <div class="color-item">
+                                <label>Cor Primária</label>
+                                <div class="color-input-wrapper">
+                                    <input type="color" id="cor-primaria" class="color-input">
+                                    <input type="text" id="cor-primaria-hex" class="color-hex" placeholder="#fbce07">
+                                </div>
+                            </div>
+                            <div class="color-item">
+                                <label>Cor Secundária</label>
+                                <div class="color-input-wrapper">
+                                    <input type="color" id="cor-secundaria" class="color-input">
+                                    <input type="text" id="cor-secundaria-hex" class="color-hex" placeholder="#ff0000">
+                                </div>
+                            </div>
+                            <div class="color-item">
+                                <label>Cor de Fundo</label>
+                                <div class="color-input-wrapper">
+                                    <input type="color" id="cor-fundo" class="color-input">
+                                    <input type="text" id="cor-fundo-hex" class="color-hex" placeholder="#0f0f23">
+                                </div>
+                            </div>
+                            <div class="color-item">
+                                <label>Cor dos Cards</label>
+                                <div class="color-input-wrapper">
+                                    <input type="color" id="cor-cards" class="color-input">
+                                    <input type="text" id="cor-cards-hex" class="color-hex" placeholder="#1a1a2e">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>Textos e Títulos</h3>
+                        <div class="form-grid-2">
+                            <div class="form-group">
+                                <label>Título Principal</label>
+                                <input type="text" id="titulo-principal" class="form-input" placeholder="Roleta da Sorte">
+                            </div>
+                            <div class="form-group">
+                                <label>Subtítulo</label>
+                                <input type="text" id="subtitulo-sistema" class="form-input" placeholder="Sistema Premium">
+                            </div>
+                            <div class="form-group">
+                                <label>Nome do Cliente/Posto</label>
+                                <input type="text" id="nome-posto" class="form-input" placeholder="Posto ABC">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>Logo e Imagens</h3>
+                        <div class="logo-upload-section">
+                            <div class="logo-preview">
+                                <!-- Caminho ajustado para ser relativo à raiz do projeto -->
+                               <img id="logo-preview" src="api/uploads/logos/logo_689ca008a26c54.03263957.png"  alt="Logo Preview">
+                            </div>
+                            <div class="logo-controls">
+                                <input type="file" id="logo-upload" accept="image/*" style="display: none;">
+                                <button id="btn-upload-logo" class="btn btn-secondary">
+                                    <span>📁</span>
+                                    <span>Escolher Logo</span>
+                                </button>
+                                <button id="btn-reset-logo" class="btn btn-warning">
+                                    <span>🔄</span>
+                                    <span>Resetar</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="personalizacao-actions">
+                    <button id="btn-salvar-personalizacao" class="btn btn-primary">
+                        <span>💾</span>
+                        <span>Salvar Personalização</span>
+                    </button>
+                    <button id="btn-reset-personalizacao" class="btn btn-danger">
+                        <span>🔄</span>
+                        <span>Restaurar Padrão</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Configurações Tab -->
+            <div id="configuracoes-tab" class="tab-panel">
+                <div class="page-header">
+                    <h2>Configurações do Sistema</h2>
+                </div>
+
+                <div class="card">
+                    <h3>Parâmetros da Roleta</h3>
+                    <div class="form-grid-2">
+                        <div class="form-group">
+                            <label>Valor Mínimo (R$)</label>
+                            <input type="number" id="config-valor-minimo" class="form-input" min="0" step="0.01">
+                        </div>
+                        <div class="form-group">
+                            <label>Valor por Giro (R$)</label>
+                            <input type="number" id="config-valor-giro" class="form-input" min="0" step="0.01">
+                        </div>
+                        <div class="form-group">
+                            <label>Total de IDs</label>
+                            <input type="number" id="config-total-ids" class="form-input" min="1" max="1000">
+                        </div>
+                        <div class="form-group">
+                            <label>Duração do Giro (ms)</label>
+                            <input type="number" id="config-duracao-giro" class="form-input" min="1000" max="10000" step="100">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="config-actions">
+                    <button id="btn-salvar-config" class="btn btn-primary">
+                        <span>💾</span>
+                        <span>Salvar Configurações</span>
+                    </button>
+                    <button id="btn-reset-config" class="btn btn-secondary">
+                        <span>🔄</span>
+                        <span>Restaurar Padrão</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Histórico Tab -->
+            <div id="historico-tab" class="tab-panel">
+                <div class="page-header">
+                    <h2>Histórico de Sorteios</h2>
+                    <button id="btn-limpar-historico" class="btn btn-warning">
+                        <span>🗑️</span>
+                        <span>Limpar Histórico</span>
+                    </button>
+                </div>
+                <div id="historico-container" class="historico-container">
+                    <!-- Histórico será carregado aqui -->
+                </div>
+            </div>
+
+            <!-- Clientes Tab -->
+            <div id="clientes-tab" class="tab-panel">
+                <div class="page-header">
+                    <h2>Clientes Cadastrados</h2>
+                    <div class="search-container">
+                        <input type="text" id="search-clientes" class="form-input" placeholder="Buscar cliente...">
+                    </div>
+                </div>
+                <div id="clientes-container" class="clientes-container">
+                    <!-- Clientes serão carregados aqui -->
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- Modal de Prêmio -->
+<div id="modal-premio" class="modal">
+    <div class="modal-backdrop"></div>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 id="modal-premio-title">Adicionar Prêmio</h2>
+            <button class="modal-close" id="modal-premio-close">×</button>
+        </div>
+        <div class="modal-body">
+            <form id="form-premio">
+                <div class="form-group">
+                    <label>Nome do Prêmio</label>
+                    <input type="text" id="premio-nome" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label>Cor</label>
+                    <input type="color" id="premio-cor" class="form-input" value="#fbce07" required>
+                </div>
+                <div class="form-group">
+                    <label>Estoque</label>
+                    <input type="number" id="premio-estoque" class="form-input" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label>Valor (R$)</label>
+                    <input type="number" id="premio-valor" class="form-input" min="0" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="premio-is-prize" checked> É um prêmio
+                    </label>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="btn-cancelar-premio">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Estoque -->
+<div id="modal-estoque" class="modal">
+    <div class="modal-backdrop"></div>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 id="modal-estoque-title">Ajustar Estoque</h2>
+            <button class="modal-close" id="modal-estoque-close">×</button>
+        </div>
+        <div class="modal-body">
+            <form id="form-estoque">
+                <div class="form-group">
+                    <label>Prêmio</label>
+                    <input type="text" id="estoque-premio-nome" class="form-input" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Estoque Atual</label>
+                    <input type="number" id="estoque-atual" class="form-input" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Novo Estoque</label>
+                    <input type="number" id="estoque-novo" class="form-input" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label>Motivo da Alteração</label>
+                    <select id="estoque-motivo" class="form-input">
+                        <option value="ajuste">Ajuste de Estoque</option>
+                        <option value="entrada">Entrada de Produtos</option>
+                        <option value="saida">Saída de Produtos</option>
+                        <option value="correcao">Correção</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="btn-cancelar-estoque">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Scripts -->
+<script src="js/shared-utils.js"></script>
+<script src="js/config-manager.js"></script>
+<script src="js/posto-manager.js"></script>
+<script src="js/admin-script.js"></script>
+</body>
+</html>

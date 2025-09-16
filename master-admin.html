@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Master Admin - Roleta Premium</title>
+  <link rel="stylesheet" href="css/admin-style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body class="master-admin-page">
+  <div class="admin-container">
+    <div class="mobile-overlay" id="mobile-overlay"></div>
+    <!-- Sidebar -->
+    <aside class="admin-sidebar" id="admin-sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <div class="logo-icon">👑</div>
+                <div class="logo-text">
+                    <h1>Master Admin</h1>
+                    <p>Gestão Geral</p>
+                </div>
+            </div>
+            <button class="sidebar-toggle" id="sidebar-toggle">
+                <span>←</span>
+            </button>
+        </div>
+
+        <nav class="sidebar-nav">
+            <button class="nav-btn active" data-tab="dashboard">
+                <span class="nav-icon">📊</span>
+                <span class="nav-text">Dashboard</span>
+            </button>
+            <button class="nav-btn" data-tab="postos">
+                <span class="nav-icon">⛽</span>
+                <span class="nav-text">Empresas</span>
+            </button>
+            <button class="nav-btn" data-tab="relatorios">
+                <span class="nav-icon">📈</span>
+                <span class="nav-text">Relatórios</span>
+            </button>
+            <button class="nav-btn" data-tab="sistema">
+                <span class="nav-icon">⚙️</span>
+                <span class="nav-text">Sistema</span>
+            </button>
+        </nav>
+
+        <div class="sidebar-footer">
+            <button id="btn-logout" class="btn btn-danger btn-block">
+                <span>🚪</span>
+                <span>Sair</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="admin-main" id="admin-main">
+        <!-- Mobile Header -->
+        <header class="mobile-header">
+            <button class="mobile-menu-btn" id="mobile-menu-btn">
+                <span>☰</span>
+            </button>
+            <h1 class="mobile-title">Master Admin</h1>
+        </header>
+
+        <div class="tab-content-wrapper">
+            <!-- Dashboard Tab -->
+            <div id="dashboard-tab" class="tab-panel active">
+                <div class="page-header">
+                    <h2>Dashboard Geral</h2>
+                </div>
+                <div class="dashboard-grid">
+                    <div class="card stat-card"><div class="stat-icon">⛽</div><div class="stat-content"><h3>Total Empresas</h3><div class="stat-number" id="total-postos">0</div></div></div>
+                    <div class="card stat-card"><div class="stat-icon">✅</div><div class="stat-content"><h3>Empresas Ativas</h3><div class="stat-number" id="postos-ativos">0</div></div></div>
+                    <div class="card stat-card"><div class="stat-icon">🎲</div><div class="stat-content"><h3>Total Giros (Global)</h3><div class="stat-number" id="total-giros">0</div></div></div>
+                    <div class="card stat-card"><div class="stat-icon">💰</div><div class="stat-content"><h3>Receita Total (Global)</h3><div class="stat-number" id="receita-total">R$ 0,00</div></div></div>
+                </div>
+                <div class="card" style="margin-top: 2rem;">
+                    <h3>Ações Rápidas</h3>
+                    <div class="page-actions" style="justify-content: center; padding-top: 1rem;">
+                        <button id="btn-backup-completo" class="btn btn-primary"><span>💾</span><span>Backup Completo</span></button>
+                        <button id="btn-limpar-logs" class="btn btn-warning"><span>🗑️</span><span>Limpar Logs</span></button>
+                        <button id="btn-reset-sistema" class="btn btn-danger"><span>⚠️</span><span>Resetar Sistema</span></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Postos Tab -->
+            <div id="postos-tab" class="tab-panel">
+                <div class="page-header">
+                    <h2>Gerenciar Postos</h2>
+                    <button id="btn-add-posto" class="btn btn-primary"><span>➕</span><span>Adicionar Empresa</span></button>
+                </div>
+                <div id="postos-list" class="estoque-grid">
+                    <!-- Postos serão carregados aqui -->
+                </div>
+            </div>
+
+            <!-- Relatórios Tab -->
+            <div id="relatorios-tab" class="tab-panel">
+                <div class="page-header">
+                    <h2>Relatórios Consolidados</h2>
+                </div>
+                <div class="card">
+                    <div class="form-group">
+                        <label for="periodo-relatorio">Selecione o Período</label>
+                        <select id="periodo-relatorio" class="form-input">
+                            <option value="diario">Diário</option>
+                            <option value="semanal">Semanal</option>
+                            <option value="mensal">Mensal</option>
+                            <option value="anual">Anual</option>
+                        </select>
+                    </div>
+                    <div class="form-actions" style="justify-content: flex-start; border: none; padding: 0;">
+                        <button id="btn-gerar-relatorio" class="btn btn-primary"><span>📊</span><span>Gerar Relatório</span></button>
+                    </div>
+                </div>
+                <div id="relatorio-content" style="margin-top: 1.5rem;">
+                    <!-- Conteúdo do relatório será inserido aqui -->
+                </div>
+            </div>
+
+            <!-- Sistema Tab -->
+            <div id="sistema-tab" class="tab-panel">
+                <div class="page-header">
+                    <h2>Configurações Gerais do Sistema</h2>
+                </div>
+                <div class="card">
+                    <h3>Parâmetros Globais</h3>
+                    <div class="form-grid-2">
+                        <div class="form-group">
+                            <label for="config-backup-auto">Backup Automático</label>
+                            <select id="config-backup-auto" class="form-input">
+                                <option value="diario">Diário</option>
+                                <option value="semanal">Semanal</option>
+                                <option value="mensal">Mensal</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="config-log-retention">Retenção de Logs (dias)</label>
+                            <input type="number" id="config-log-retention" class="form-input" min="1">
+                        </div>
+                        <div class="form-group">
+                            <label for="config-max-postos">Máximo de Postos</label>
+                            <input type="number" id="config-max-postos" class="form-input" min="1">
+                        </div>
+                    </div>
+                </div>
+                <div class="config-actions">
+                    <button id="btn-salvar-config-master" class="btn btn-primary"><span>💾</span><span>Salvar Configurações</span></button>
+                </div>
+            </div>
+          </div>
+    </main>
+  </div>
+
+  <!-- Modal de Posto -->
+<div id="modal-posto" class="modal">
+  <div class="modal-backdrop"></div>
+  <div class="modal-content">
+      <div class="modal-header">
+          <h2 id="modal-posto-title">Adicionar Empresa</h2>
+          <button class="modal-close" id="modal-posto-close">×</button>
+      </div>
+      <div class="modal-body">
+          <form id="form-posto">
+              <div class="form-group">
+                  <label for="posto-nome">Nome da Empresa</label>
+                  <input type="text" id="posto-nome" name="posto-nome" class="form-input" required>
+              </div>
+              <div class="form-group">
+                  <label for="posto-cnpj">CNPJ</label>
+                  <input type="text" id="posto-cnpj" name="posto-cnpj" class="form-input" required>
+              </div>
+              <div class="form-group">
+                  <label for="posto-email">Email de Contato (Opcional)</label>
+                  <input type="email" id="posto-email" name="posto-email" class="form-input">
+              </div>
+              <div class="form-group">
+                  <label for="posto-senha">Senha de Acesso</label>
+                  <input type="password" id="posto-senha" name="posto-senha" class="form-input" required>
+              </div>
+              <div class="form-actions">
+                  <button type="button" class="btn btn-secondary" id="btn-cancelar-posto">Cancelar</button>
+                  <button type="submit" class="btn btn-primary">Salvar</button>
+              </div>
+          </form>
+      </div>
+  </div>
+</div>
+
+  <!-- Toast Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Scripts -->
+  <script src="js/shared-utils.js"></script>
+  <script src="js/config-manager.js"></script>
+  <script src="js/posto-manager.js"></script>
+  <script src="js/master-manager.js"></script>
+  <script src="js/master-admin-script.js"></script>
+</body>
+</html>

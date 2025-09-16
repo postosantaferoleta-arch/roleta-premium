@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Master Login - Roleta Premium</title>
+  <link rel="stylesheet" href="css/admin-style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="login-background">
+  <div class="login-container">
+      <div class="login-header">
+          <div class="login-logo">👑</div>
+          <h1 class="login-title">Master Admin</h1>
+          <p class="login-subtitle">Acesso exclusivo do administrador</p>
+      </div>
+
+      <form id="master-login-form">
+          <div class="error-message" id="error-message"></div>
+          
+          <div class="form-group">
+              <label for="master-username" class="form-label">Usuário Master</label>
+              <input type="text" id="master-username" class="form-input" placeholder="seu.usuario" required autocomplete="username">
+          </div>
+
+          <div class="form-group">
+              <label for="master-password" class="form-label">Senha Master</label>
+              <input type="password" id="master-password" class="form-input" placeholder="••••••••" required autocomplete="current-password">
+          </div>
+
+          <button type="submit" class="btn btn-primary login-btn" id="login-btn">Entrar como Master</button>
+      </form>
+
+      <div class="back-link">
+          <a href="login.html">← Voltar</a>
+      </div>
+  </div>
+
+  <script src="js/shared-utils.js"></script>
+  <script src="js/master-manager.js"></script>
+  <script>
+      document.addEventListener('DOMContentLoaded', function() {
+          const form = document.getElementById('master-login-form');
+          const usernameInput = document.getElementById('master-username');
+          const passwordInput = document.getElementById('master-password');
+          const loginBtn = document.getElementById('login-btn');
+          const errorMessage = document.getElementById('error-message');
+
+          // Verifica se o master já está logado
+          if (window.masterManager && window.masterManager.isLogado()) {
+              window.location.href = 'master-admin.html';
+              return;
+          }
+
+          form.addEventListener('submit', async function(e) {
+              e.preventDefault(); // Impede o envio padrão do formulário
+
+              const username = usernameInput.value.trim();
+              const password = passwordInput.value.trim();
+
+              if (!username || !password) {
+                  showError('Por favor, preencha usuário e senha.');
+                  return;
+              }
+
+              loginBtn.disabled = true;
+              loginBtn.textContent = 'Verificando...';
+              hideError();
+              
+              // Pequeno atraso para feedback visual, opcional
+              setTimeout(async () => {
+                  try {
+                      // Chama a função login sem argumentos, ela pega os valores dos inputs
+                      const loginSuccess = await window.masterManager.login();
+                      
+                      if (loginSuccess) {
+                          window.location.href = 'master-admin.html';
+                      } else {
+                          // A mensagem de erro agora vem do master-manager que já a torna mais amigável
+                          showError('Usuário ou senha incorretos.'); // Mensagem mais genérica por segurança
+                          loginBtn.disabled = false;
+                          loginBtn.textContent = 'Entrar como Master';
+                          // Mantém o foco no campo de usuário para facilitar nova tentativa
+                          usernameInput.focus();
+                      }
+                  } catch (error) {
+                       showError(error.message || 'Erro desconhecido ao fazer login.');
+                       loginBtn.disabled = false;
+                       loginBtn.textContent = 'Entrar como Master';
+                       usernameInput.focus();
+                  }
+              }, 500); // Reduzi o setTimeout para 500ms
+          });
+
+          function showError(message) {
+              errorMessage.textContent = message;
+              errorMessage.style.display = 'block';
+          }
+          function hideError() {
+              errorMessage.style.display = 'none';
+          }
+          usernameInput.focus(); // Foca no campo de usuário ao carregar
+      });
+  </script>
+</body>
+</html>

@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roleta da Sorte - Sistema Premium</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Background Effects -->
+    <div class="bg-effects">
+        <div class="floating-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+        </div>
+        <div class="gradient-orbs">
+            <div class="orb orb-1"></div>
+            <div class="orb orb-2"></div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">
+                    <div class="icon-inner">🎯</div>
+                    <div class="icon-glow"></div>
+                </div>
+                <div class="logo-text">
+                    <h1 id="titulo-sistema">Roleta da Sorte</h1>
+                    <div class="logo-subtitle">
+                        <span class="cliente-nome">Sistema Premium</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stats-dashboard">
+                <div class="stat-card">
+                    <div class="stat-icon">🎲</div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="ids-restantes">200</div>
+                        <div class="stat-label">IDs Restantes</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🏆</div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="premios-ganhos">0</div>
+                        <div class="stat-label">Prêmios Ganhos</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⭐</div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="premios-disponiveis">8</div>
+                        <div class="stat-label">Prêmios Disponíveis</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="header-controls">
+                <a href="admin.html" class="control-btn">
+                    <span>⚙️</span>
+                    <span>Admin</span>
+                    <div class="btn-ripple"></div>
+                </a>
+                <button id="btn-logout" class="control-btn">
+                    <span>🚪</span>
+                    <span>Sair</span>
+                    <div class="btn-ripple"></div>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="main-content-full">
+            <!-- Status do Cliente -->
+            <div id="cliente-status" class="cliente-status" style="display: none;">
+                <div class="cliente-info">
+                    <div class="cliente-avatar">👤</div>
+                    <div class="cliente-dados">
+                        <h3 id="cliente-nome-atual">Nome do Cliente</h3>
+                        <p id="cliente-detalhes">CPF: 000.000.000-00 • Giros: 0/0</p>
+                    </div>
+                </div>
+                <button id="btn-trocar-cliente" class="btn-trocar">
+                    <span>🔄</span>
+                    <span>Trocar Cliente</span>
+                </button>
+            </div>
+
+            <!-- Roleta Section -->
+            <section class="roleta-section roleta-section-centered">
+                <div class="roleta-card">
+                    <div class="roleta-container">
+                        <!-- Ponteiro -->
+                        <div class="ponteiro">
+                            <div class="ponteiro-inner"></div>
+                        </div>
+
+                        <!-- Roleta -->
+                        <div class="roleta-wrapper">
+                            <div class="roleta-outer-ring"></div>
+                            <svg id="roleta-svg" viewBox="0 0 400 400">
+                                <!-- Seções da roleta serão geradas dinamicamente -->
+                            </svg>
+                        </div>
+
+                        <!-- Botão Central -->
+                        <div class="btn-central-container">
+                            <button id="btn-central" class="btn-central">
+                                <img id="btn-central-logo" src="" alt="Logo" class="btn-central-logo"> <!-- SRC será preenchido pelo JS -->
+                                <div id="btn-central-text" class="btn-central-text" style="display: none;">GIRAR</div>
+                                <div class="btn-central-glow"></div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Modal de Seleção de Cliente -->
+    <div id="modal-selecao-cliente" class="modal">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <div class="modal-icon">👥</div>
+                    <h2>Selecionar Cliente</h2>
+                </div>
+                <button id="modal-selecao-close" class="modal-close">
+                    <span>×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="cliente-opcoes">
+                    <div id="btn-novo-cliente" class="opcao-btn">
+                        <div class="opcao-icon">➕</div>
+                        <div class="opcao-content">
+                            <h3>Novo Cliente</h3>
+                            <p>Cadastrar um novo cliente</p>
+                        </div>
+                    </div>
+                    <div id="btn-cliente-existente" class="opcao-btn">
+                        <div class="opcao-icon">📋</div>
+                        <div class="opcao-content">
+                            <h3>Cliente Existente</h3>
+                            <p>Selecionar da lista</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Lista de Clientes -->
+    <div id="modal-lista-clientes" class="modal modal-lista">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <div class="modal-icon">📋</div>
+                    <h2>Selecionar Cliente</h2>
+                </div>
+                <button id="modal-lista-close" class="modal-close">
+                    <span>×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="search-container">
+                    <div class="search-icon">🔍</div>
+                    <input type="text" id="search-cliente" class="search-input" placeholder="Buscar cliente...">
+                </div>
+                <div id="lista-clientes" class="clientes-lista">
+                    <!-- Lista será preenchida dinamicamente -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Cadastro -->
+    <div id="modal-cadastro" class="modal">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <div class="modal-icon">➕</div>
+                    <h2>Novo Cliente</h2>
+                </div>
+                <button id="modal-close" class="modal-close">
+                    <span>×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="form-cadastro">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="nome">
+                                <span class="label-icon">👤</span>
+                                <span class="label-text">Nome Completo *</span>
+                            </label>
+                            <div class="input-wrapper">
+                                <input type="text" id="nome" name="nome" required placeholder="Digite o nome completo" class="input-field">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="cpf">
+                                <span class="label-icon">📄</span>
+                                <span class="label-text">CPF *</span>
+                            </label>
+                            <div class="input-wrapper">
+                                <input type="text" id="cpf" name="cpf" required placeholder="000.000.000-00" class="input-field">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="telefone">
+                                <span class="label-icon">📱</span>
+                                <span class="label-text">Telefone *</span>
+                            </label>
+                            <div class="input-wrapper">
+                                <input type="text" id="telefone" name="telefone" required placeholder="(00) 00000-0000" class="input-field">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">
+                                <span class="label-icon">📧</span>
+                                <span class="label-text">E-mail</span>
+                            </label>
+                            <div class="input-wrapper">
+                                <input type="email" id="email" name="email" placeholder="email@exemplo.com" class="input-field">
+                            </div>
+                        </div>
+                        <div class="form-group form-group-full">
+                            <label for="valor">
+                                <span class="label-icon">⛽</span>
+                                <span class="label-text">Valor do Abastecimento *</span>
+                            </label>
+                            <div class="input-wrapper input-currency">
+                                <input type="text" id="valor" name="valor" required placeholder="R$ 0,00" class="input-field">
+                                <div class="currency-indicator">R$</div>
+                            </div>
+                            <div class="input-hint">
+                                <span class="hint-icon">💡</span>
+                                <span class="hint-text">R$ 100 = 1 giro • R$ 200 = 2 giros • R$ 300 = 3 giros...</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" id="btn-cancelar" class="btn btn-secondary">
+                            <span class="btn-icon">❌</span>
+                            <span class="btn-text">Cancelar</span>
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <span class="btn-icon">✅</span>
+                            <span class="btn-text">Cadastrar</span>
+                            <div class="btn-glow"></div>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Resultado -->
+    <div id="modal-resultado" class="modal modal-resultado">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <div class="modal-icon" id="resultado-icon">🎉</div>
+                    <h2 id="resultado-title">PARABÉNS!</h2>
+                </div>
+                <button id="resultado-close" class="modal-close">
+                    <span>×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="resultado-content">
+                    <div class="resultado-participante">
+                        <div class="participante-avatar">👤</div>
+                        <div class="participante-info">
+                            <h3 id="resultado-nome">Nome do Participante</h3>
+                            <p id="resultado-cpf">CPF: 000.000.000-00</p>
+                        </div>
+                    </div>
+
+                    <div class="resultado-id">
+                        <div class="id-container">
+                            <div class="id-label">ID Sorteado</div>
+                            <div class="id-number" id="resultado-id-num">#123</div>
+                        </div>
+                    </div>
+
+                    <div class="resultado-premio">
+                        <div class="premio-container">
+                            <h3 id="resultado-premio-nome">PRÊMIO GANHO</h3>
+                            <div id="resultado-mensagem" class="resultado-mensagem">
+                                Parabéns! Você ganhou um prêmio incrível!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button id="btn-fechar-resultado" class="btn btn-secondary">
+                        <span class="btn-icon">❌</span>
+                        <span class="btn-text">Fechar</span>
+                    </button>
+                    <button id="btn-novo-sorteio" class="btn btn-primary">
+                        <span class="btn-icon">🎲</span>
+                        <span class="btn-text">Novo Sorteio</span>
+                        <div class="btn-glow"></div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Confetti Container -->
+    <div id="confetti-container" class="confetti-container"></div>
+
+    <!-- Scripts -->
+    <script src="js/shared-utils.js"></script>
+    <script src="js/config-manager.js"></script>
+    <script src="js/posto-manager.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>
